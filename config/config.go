@@ -17,9 +17,18 @@ type AppConfig struct {
 	Debug bool `yaml:"debug"`
 	Port  int  `yaml:"port"`
 	Login struct {
-		Agency   string `yaml:"agency"`
-		Username string `yaml:"username"`
-		Password string `yaml:"password"`
+		Iar struct {
+			Agency   string `yaml:"agency"`
+			Username string `yaml:"username"`
+			Password string `yaml:"password"`
+		} `yaml:"iar"`
+		Cad struct {
+			Monitor  string `yaml:"monitor"`
+			FDID     string `yaml:"fdid"`
+			BaseURL  string `yaml:"base-url"`
+			Username string `yaml:"username"`
+			Password string `yaml:"password"`
+		} `yaml:"cad"`
 	} `yaml:"login"`
 	Paths struct {
 		BasePath string `yaml:"base-path"`

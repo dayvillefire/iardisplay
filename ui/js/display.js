@@ -15,7 +15,7 @@ $(document).ready(function () {
 });
 
 function populateIncidents() {
-    $.getJSON("/api/incidents", {}, function (response) {
+    $.getJSON("/api/iar/incidents", {}, function (response) {
         //var body = '';
         $('#incidents').html('');
         x = response.incidents.length;
@@ -48,7 +48,7 @@ function populateIncidents() {
 }
 
 function populateOnDuty() {
-    $.getJSON("/api/schedule", {}, function (response) {
+    $.getJSON("/api/iar/schedule", {}, function (response) {
         var body = '';
         x = response.length;
         for (i = 0; i < x; i++) {
@@ -69,7 +69,7 @@ function populateOnDuty() {
 }
 
 function populateResponding() {
-    $.getJSON("/api/responding", {}, function (response) {
+    $.getJSON("/api/iar/responding", {}, function (response) {
         var body = '';
         console.log("populateResponding(): " + JSON.stringify(response));
         x = response.length;

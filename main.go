@@ -17,6 +17,7 @@ import (
 	"github.com/gin-gonic/contrib/gzip"
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
+	cadmonitor "github.com/jbuchbinder/cadmonitor/monitor"
 	"github.com/jbuchbinder/iarapi"
 	"github.com/natefinch/lumberjack"
 )
@@ -33,6 +34,7 @@ var (
 	cacheStatusQuitChan = make(chan bool)
 	shutdownChannel     = make(chan os.Signal, 1)
 	iar                 iarapi.IamRespondingAPI
+	cad                 cadmonitor.CadMonitor
 	hostname            string
 	Version             string
 	VERSION             string
@@ -80,7 +82,27 @@ func main() {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
-	iar.Login(c.Login.Agency, c.Login.Username, c.Login.Password)
+	log.Print("Logging into IAR")
+	iar.Login(c.Login.Iar.Agency, c.Login.Iar.Username, c.Login.Iar.Password)
+	if err != nil {
+		panic(err)
+	}
+
+	log.Print("Configuring CAD interface")
+	cad, err = cadmonitor.GetCadMonitor(c.Login.Cad.Monitor)
+	if err != nil {
+		panic(err)
+	}
+	err = cad.ConfigureFromValues(map[string]string{
+		"fdid":    c.Login.Cad.FDID,
+		"baseUrl": c.Login.Cad.BaseURL,
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	log.Print("Logging into CAD system")
+	err = cad.Login(c.Login.Cad.Username, c.Login.Cad.Password)
 	if err != nil {
 		panic(err)
 	}
@@ -110,7 +132,7 @@ func application() {
 	m.StaticFile("/", config.Config.Paths.BasePath+string(os.PathSeparator)+"ui"+string(os.PathSeparator)+"index.html")
 
 	go func() {
-		log.Printf("Initializing deployer on :%d", config.Config.Port)
+		log.Printf("Initializing display on :%d", config.Config.Port)
 		if err := http.ListenAndServe(fmt.Sprintf(":%d", config.Config.Port), m); err != nil {
 			log.Fatal(err)
 		}
@@ -120,6 +142,7 @@ func application() {
 		for {
 			select {
 			default:
+				cad.GetActiveCalls()
 				iar.GetNowRespondingWithSort()
 				time.Sleep(time.Duration(5) * time.Second)
 			case <-shutdownChannel:
