@@ -116,6 +116,19 @@ func application() {
 		}
 	}()
 
+	go func() {
+		for {
+			select {
+			default:
+				iar.GetNowRespondingWithSort()
+				time.Sleep(time.Duration(5) * time.Second)
+			case <-shutdownChannel:
+				// stop
+				return
+			}
+		}
+	}()
+
 	// Catch signals and termination
 	signal.Notify(shutdownChannel, os.Interrupt)
 	signal.Notify(shutdownChannel, syscall.SIGTERM)
