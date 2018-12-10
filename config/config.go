@@ -23,11 +23,12 @@ type AppConfig struct {
 			Password string `yaml:"password"`
 		} `yaml:"iar"`
 		Cad struct {
-			Monitor  string `yaml:"monitor"`
-			FDID     string `yaml:"fdid"`
-			BaseURL  string `yaml:"base-url"`
-			Username string `yaml:"username"`
-			Password string `yaml:"password"`
+			Monitor       string `yaml:"monitor"`
+			FDID          string `yaml:"fdid"`
+			BaseURL       string `yaml:"base-url"`
+			Username      string `yaml:"username"`
+			Password      string `yaml:"password"`
+			CacheDuration int64  `yaml:"cache-duration"`
 		} `yaml:"cad"`
 	} `yaml:"login"`
 	Paths struct {

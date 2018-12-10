@@ -36,7 +36,7 @@ func apiCadCurrent(c *gin.Context) {
 	}
 	cs := map[string]monitor.CallStatus{}
 	for _, x := range a {
-		detail, err := cad.GetStatus(x)
+		detail, err := cadStatusCache.RetrieveWithCache(x)
 		if err == nil {
 			cs[detail.DispatchTime.Format("2006-01-02 15:04:05")] = detail
 		}
@@ -52,7 +52,7 @@ func apiCadClearedDate(c *gin.Context) {
 	}
 	cs := map[string]monitor.CallStatus{}
 	for _, x := range a {
-		detail, err := cad.GetStatus(x)
+		detail, err := cadStatusCache.RetrieveWithCache(x)
 		if err == nil {
 			cs[detail.DispatchTime.Format("2006-01-02 15:04:05")] = detail
 		}

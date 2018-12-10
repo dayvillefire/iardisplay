@@ -1,0 +1,18 @@
+debug: true
+port: 8000
+login:
+  iar:
+    agency: AGENCY
+    username: usernamehere
+    password: mypassword
+  cad:
+    monitor: aegis
+    username: AEGISLOGIN
+    password: aegispass
+    fdid: 04042
+    base-url: http://cadview.qvec.org/NewWorld.CAD.ViewOnly/
+    cache-duration: 15
+paths:
+  base-path: .
+apm:
+  enabled: false

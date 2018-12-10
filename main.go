@@ -35,6 +35,7 @@ var (
 	shutdownChannel     = make(chan os.Signal, 1)
 	iar                 iarapi.IamRespondingAPI
 	cad                 cadmonitor.CadMonitor
+	cadStatusCache      CadCallStatusCache
 	hostname            string
 	Version             string
 	VERSION             string
@@ -83,6 +84,7 @@ func main() {
 	}
 
 	log.Print("Logging into IAR")
+	iar.Debug = c.Debug
 	iar.Login(c.Login.Iar.Agency, c.Login.Iar.Username, c.Login.Iar.Password)
 	if err != nil {
 		panic(err)
@@ -105,6 +107,12 @@ func main() {
 	err = cad.Login(c.Login.Cad.Username, c.Login.Cad.Password)
 	if err != nil {
 		panic(err)
+	}
+
+	log.Print("Initializing CAD status cache")
+	cadStatusCache = CadCallStatusCache{
+		Monitor:        cad,
+		ExpiryDuration: time.Duration(c.Login.Cad.CacheDuration) * time.Second,
 	}
 
 	application()
