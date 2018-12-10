@@ -1,42 +1,50 @@
 <!doctype html>
 <html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm">
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"></script>
-    <script src="js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"></script>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm">
+        <script src="js/jquery-3.3.1.min.js"></script>
+        <script src="js/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"></script>
+        <script src="js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"></script>
 
-    <link rel="apple-touch-icon" href="img/iar.png" sizes="180x180">
-    <link rel="icon" href="img/iar.png" sizes="16x16" type="image/png">
-    <link rel="icon" href="img/iar.png" sizes="32x32" type="image/png">
+        <link rel="apple-touch-icon" href="img/iar.png" sizes="180x180">
+        <link rel="icon" href="img/iar.png" sizes="16x16" type="image/png">
+        <link rel="icon" href="img/iar.png" sizes="32x32" type="image/png">
 
-    <title>IAR Display</title>
+        <title>IAR Display</title>
 
-    <style type="text/css">
+        <style type="text/css">
         /* override TH with something more colorful */
         th {
             background-color: #faa;
         }
-    </style>
-</head>
 
-<body>
-    <div class="container-fluid">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">
-                <img src="img/iar.png" width="30" height="30" class="d-inline-block align-top" alt="">
-                Dayville Fire Company
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
-                aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <!--
+        .card-body {
+            padding-top: 0px !important;
+        }
+
+        .card-header {
+            margin-bottom: -5px !important;
+        }
+    </style>
+    </head>
+
+    <body>
+        <div class="container-fluid">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand" href="#">
+                    <img src="img/iar.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                    Dayville Fire Company
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <!--
                     <li class="nav-item active">
                         <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                     </li>
@@ -50,110 +58,109 @@
                             <a class="nav-link disabled" href="#">Disabled</a>
                         </li>
                         -->
-                </ul>
-            </div>
-        </nav>
-        <div class="row">
-            <div class="col-6">
-                <h5 class="card-header alert-danger">Incidents</h5>
-                <div class="card">
-                    <div class="card-body" style="display: flex; height: 0px !important; padding: .25rem;">
+                    </ul>
+                </div>
+            </nav>
+            <div class="row">
+                <div class="col-lg-6">
+                    <h5 class="card-header alert-danger">Incidents</h5>
+                    <div class="card">
+                        <div class="card-body" style="display: flex; height: 0px !important; padding: .25rem;">
+                        </div>
+                        <div>
+                            <table class="table-sm">
+                                <thead style="display: none;">
+                                    <tr>
+                                        <th scope="col">Updated</th>
+                                        <th scope="col">Message</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="incidents">
+                                    <tr>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <h5 class="card-header alert-danger">Now Responding</h5>
+                        <div class="card-body" style="display: flex; height: 0px !important; padding: .25rem;">
+                        </div>
                         <table class="table-sm">
-                            <thead style="display: none;">
+                            <thead>
                                 <tr>
-                                    <th scope="col">Updated</th>
-                                    <th scope="col">Message</th>
+                                    <th scope="col">Responding</th>
+                                    <th scope="col">Position</th>
+                                    <th scope="col">Dest</th>
+                                    <th scope="col">At</th>
+                                    <th scope="col">ETA</th>
                                 </tr>
                             </thead>
-                            <tbody id="incidents">
-                                <tr>
-                                </tr>
+                            <tbody id="responding">
                             </tbody>
                         </table>
                     </div>
                 </div>
-            </div>
-            <div class="col-6">
-                <div class="card">
-                    <h5 class="card-header alert-danger">Now Responding</h5>
-                    <div class="card-body" style="display: flex; height: 0px !important; padding: .25rem;">
-                    </div>
-                    <table class="table-sm">
-                        <thead>
-                            <tr>
-                                <th scope="col">Responding</th>
-                                <th scope="col">Position</th>
-                                <th scope="col">Responding To</th>
-                                <th scope="col">Called At</th>
-                                <th scope="col">ETA Before</th>
-                            </tr>
-                        </thead>
-                        <tbody id="responding">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            </div> <!-- /row -->
 
-            <!-- -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <h5 class="card-header alert-danger">On Duty</h5>
+                        <div class="card-body" style="display: flex; height: 0px !important; padding: .25rem;">
+                        </div>
+                        <table class="table-sm">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Responding</th>
+                                    <th scope="col">Position</th>
+                                    <th scope="col">Where</th>
+                                    <th scope="col">At</th>
+                                    <th scope="col">ETA</th>
+                                </tr>
+                            </thead>
+                            <tbody id="schedule">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 
             <div class="w-100"></div>
+            -->
 
-            <div class="col">
-                <div class="card">
-                    <h5 class="card-header alert-danger">On Duty</h5>
-                    <div class="card-body" style="display: flex; height: 0px !important; padding: .25rem;">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <h5 class="card-header alert-danger">Units</h5>
+                        <div class="card-body" style="display: flex; height: 0px !important; padding: .25rem;">
+                        </div>
+                        <table class="table-sm">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Time</th>
+                                    <th scope="col">Pri</th>
+                                    <th scope="col">Address</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Responding</th>
+                                    <th scope="col">On Scene</th>
+                                    <th scope="col">Cleared</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cad">
+                            </tbody>
+                        </table>
                     </div>
-                    <table class="table-sm">
-                        <thead>
-                            <tr>
-                                <th scope="col">Responding</th>
-                                <th scope="col">Position</th>
-                                <th scope="col">Responding To</th>
-                                <th scope="col">Called At</th>
-                                <th scope="col">ETA Before</th>
-                            </tr>
-                        </thead>
-                        <tbody id="schedule">
-                        </tbody>
-                    </table>
                 </div>
-            </div>
-
-            <!-- -->
-            <div class="w-100"></div>
-
-            <div class="col">
-                <div class="card">
-                    <h5 class="card-header alert-danger">Units</h5>
-                    <div class="card-body" style="display: flex; height: 0px !important; padding: .25rem;">
-                    </div>
-                    <table class="table-sm">
-                        <thead>
-                            <tr>
-                                <th scope="col">Case Time</th>
-                                <th scope="col">Priority</th>
-                                <th scope="col">Address</th>
-                                <th scope="col">Type</th>
-                                <th scope="col">Responding</th>
-                                <th scope="col">On Scene</th>
-                                <th scope="col">Cleared</th>
-                            </tr>
-                        </thead>
-                        <tbody id="cad">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
 
 
-        </div>
-    </div>
-    </div> <!-- /container-fluid -->
+            </div> <!-- /row -->
+        </div> <!-- /container-fluid -->
 
-    <script>
+        <script>
         $.getScript("js/display.js");
     </script>
-</body>
+    </body>
 
 </html>

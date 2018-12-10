@@ -16,6 +16,8 @@ import (
 func initApi(m *gin.Engine) {
 	g := m.Group("/api")
 
+	g.GET("/config", apiUIConfig)
+
 	c := g.Group("/cad")
 	c.GET("/current", apiCadCurrent)
 	c.GET("/cleared/:dt", apiCadClearedDate)
@@ -111,6 +113,14 @@ func apiIarSchedule(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, s)
+}
+
+func apiUIConfig(c *gin.Context) {
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"debug":          config.Config.Debug,
+		"unitSuffix":     config.Config.Login.Cad.UnitSuffix,
+		"ignorePatterns": config.Config.Login.Cad.IgnorePatterns,
+	})
 }
 
 func ContextRequestHeader(c *gin.Context, key string) string {

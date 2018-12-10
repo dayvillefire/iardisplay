@@ -1,8 +1,15 @@
 // IAR Display logic
 
+var config = {};
 var incidentCache = {};
 
 $(document).ready(function () {
+    // Load local UI config before we go any further
+    $.getJSON("/api/config", {}, function (response) {
+        config = response;
+        console.log(config);
+    });
+
     // Initial load
     populateIncidents();
     populateOnDuty();
@@ -17,8 +24,8 @@ $(document).ready(function () {
 });
 
 function populateCad() {
+    //$.getJSON("/api/cad/cleared/12-10-2018", {}, function (response) {
     $.getJSON("/api/cad/current", {}, function (response) {
-        //$.getJSON("/api/cad/cleared/12-8-2018", {}, function (response) {
         var body = '';
         console.log("populateCad(): " + JSON.stringify(response));
         for (var i in response) {
@@ -35,8 +42,7 @@ function populateCad() {
             var unitsonscene = [];
             var unitscleared = [];
             for (var unit in response[i].units) {
-                // TODO: FIXME: XXX: refactor this logic into something configured on the server side
-                if (unit.startsWith('STA') || unit.startsWith('RES') || unit.endsWith('OFF') || unit.startsWith('KB')) {
+                if (!isUnitValid(unit)) {
                     continue;
                 }
                 if (response[i].units[unit]['status'] == 'RESPONDING') {
@@ -86,6 +92,7 @@ function populateIncidents() {
             if (i == 0) {
                 body += "<b>";
             }
+            // Use timestamp, but remove annoying 'T' separator
             body += response.detail[id + 0].ArrivedOn.replace('T', ' ');
             if (i == 0) {
                 body += "</b>";
@@ -149,10 +156,32 @@ function populateResponding() {
     });
 }
 
+function isUnitValid(unit) {
+    for (var i = 0; i < config.ignorePatterns.length; i++) {
+        var p = config.ignorePatterns[i];
+        if (p == unit) {
+            return false;
+        }
+        if (p.endsWith('*')) {
+            if (unit.startsWith(p.replace('*', ''))) {
+                return false;
+            }
+        }
+        if (p.startsWith('*')) {
+            if (unit.endsWith(p.replace('*', ''))) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 function highlightOurUnits(unit) {
-    // TODO: FIXME: should be configured server side rather than hardcoded
-    if (!unit.endsWith('63')) {
-        return unit
+    if (config.unitSuffix == '') {
+        return unit;
+    }
+    if (!unit.endsWith(config.unitSuffix)) {
+        return unit;
     }
     return '<b><font color="#f00">' + unit + '</font></b>';
 }
