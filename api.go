@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"strconv"
 	"strings"
 
 	"github.com/dayvillefire/iardisplay/config"
@@ -63,11 +62,13 @@ func apiCadClearedDate(c *gin.Context) {
 }
 
 func apiIarIncidents(c *gin.Context) {
-	i, err := iar.GetLatestIncidents()
+	//i, err := iar.GetLatestIncidents()
+	iraw, err := iarCache.RetrieveWithCache(IarLatestIncidents, "")
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
+	i := iraw.([]iarapi.IncidentInfoData)
 	d := map[string]iarapi.IncidentInfoData{}
 	for _, x := range i {
 		detail, err := iar.GetIncidentInfo(x.Id)
@@ -79,22 +80,23 @@ func apiIarIncidents(c *gin.Context) {
 }
 
 func apiIarIncidentDetail(c *gin.Context) {
-	id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
-	i, err := iar.GetIncidentInfo(id)
+	//id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
+	//i, err := iar.GetIncidentInfo(id)
+	i, err := iarCache.RetrieveWithCache(IarIncidentInfoData, c.Param("id"))
 	if err != nil { ////a
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
-	c.JSON(http.StatusOK, i)
+	c.JSON(http.StatusOK, i.([]iarapi.IncidentInfoData))
 }
 
 func apiIarMessages(c *gin.Context) {
-	ms, err := iar.ListWithParser()
+	ms, err := iarCache.RetrieveWithCache(IarDispatchMessage, "")
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
-	c.JSON(http.StatusOK, ms)
+	c.JSON(http.StatusOK, ms.([]iarapi.DispatchMessage))
 }
 
 func apiIarNowResponding(c *gin.Context) {
@@ -107,19 +109,19 @@ func apiIarNowResponding(c *gin.Context) {
 }
 
 func apiIarSchedule(c *gin.Context) {
-	s, err := iar.GetOnScheduleWithSort()
+	s, err := iarCache.RetrieveWithCache(IarOnSchedule, "")
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
-	c.JSON(http.StatusOK, s)
+	c.JSON(http.StatusOK, s.([]iarapi.OnSchedule))
 }
 
 func apiUIConfig(c *gin.Context) {
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"debug":          config.Config.Debug,
-		"unitSuffix":     config.Config.Login.Cad.UnitSuffix,
-		"ignorePatterns": config.Config.Login.Cad.IgnorePatterns,
+		"unitSuffix":     config.Config.Accounts.Cad.UnitSuffix,
+		"ignorePatterns": config.Config.Accounts.Cad.IgnorePatterns,
 	})
 }
 

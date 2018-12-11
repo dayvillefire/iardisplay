@@ -35,6 +35,7 @@ var (
 	shutdownChannel     = make(chan os.Signal, 1)
 	iar                 iarapi.IamRespondingAPI
 	cad                 cadmonitor.CadMonitor
+	iarCache            IarCache
 	cadStatusCache      CadCallStatusCache
 	hostname            string
 	Version             string
@@ -85,26 +86,32 @@ func main() {
 
 	log.Print("Logging into IAR")
 	iar.Debug = c.Debug
-	iar.Login(c.Login.Iar.Agency, c.Login.Iar.Username, c.Login.Iar.Password)
+	iar.Login(c.Accounts.Iar.Agency, c.Accounts.Iar.Username, c.Accounts.Iar.Password)
 	if err != nil {
 		panic(err)
 	}
 
+	log.Print("Initializing IAR cache")
+	iarCache = IarCache{
+		Iar:            iar,
+		ExpiryDuration: time.Duration(c.Accounts.Cad.CacheDuration) * time.Second,
+	}
+
 	log.Print("Configuring CAD interface")
-	cad, err = cadmonitor.GetCadMonitor(c.Login.Cad.Monitor)
+	cad, err = cadmonitor.GetCadMonitor(c.Accounts.Cad.Monitor)
 	if err != nil {
 		panic(err)
 	}
 	err = cad.ConfigureFromValues(map[string]string{
-		"fdid":    c.Login.Cad.FDID,
-		"baseUrl": c.Login.Cad.BaseURL,
+		"fdid":    c.Accounts.Cad.FDID,
+		"baseUrl": c.Accounts.Cad.BaseURL,
 	})
 	if err != nil {
 		panic(err)
 	}
 
 	log.Print("Logging into CAD system")
-	err = cad.Login(c.Login.Cad.Username, c.Login.Cad.Password)
+	err = cad.Login(c.Accounts.Cad.Username, c.Accounts.Cad.Password)
 	if err != nil {
 		panic(err)
 	}
@@ -112,7 +119,7 @@ func main() {
 	log.Print("Initializing CAD status cache")
 	cadStatusCache = CadCallStatusCache{
 		Monitor:        cad,
-		ExpiryDuration: time.Duration(c.Login.Cad.CacheDuration) * time.Second,
+		ExpiryDuration: time.Duration(c.Accounts.Cad.CacheDuration) * time.Second,
 	}
 
 	application()

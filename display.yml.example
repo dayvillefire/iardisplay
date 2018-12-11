@@ -1,10 +1,11 @@
 debug: true
 port: 8000
-login:
+accounts:
   iar:
     agency: AGENCY
     username: usernamehere
     password: mypassword
+    cache-duration: 10
   cad:
     monitor: aegis
     username: AEGISLOGIN

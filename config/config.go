@@ -14,13 +14,14 @@ var (
 )
 
 type AppConfig struct {
-	Debug bool `yaml:"debug"`
-	Port  int  `yaml:"port"`
-	Login struct {
+	Debug    bool `yaml:"debug"`
+	Port     int  `yaml:"port"`
+	Accounts struct {
 		Iar struct {
-			Agency   string `yaml:"agency"`
-			Username string `yaml:"username"`
-			Password string `yaml:"password"`
+			Agency        string `yaml:"agency"`
+			Username      string `yaml:"username"`
+			Password      string `yaml:"password"`
+			CacheDuration string `yaml:"cache-duration"`
 		} `yaml:"iar"`
 		Cad struct {
 			Monitor        string   `yaml:"monitor"`
@@ -32,7 +33,7 @@ type AppConfig struct {
 			UnitSuffix     string   `yaml:"unit-suffix"`
 			IgnorePatterns []string `yaml:"ignore-patterns"`
 		} `yaml:"cad"`
-	} `yaml:"login"`
+	} `yaml:"accounts"`
 	Paths struct {
 		BasePath string `yaml:"base-path"`
 	} `yaml:"paths"`
