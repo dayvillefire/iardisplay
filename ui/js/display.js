@@ -10,6 +10,8 @@ $(document).ready(function () {
         console.log(config);
     });
 
+    setInterval(showClock, 1000);
+
     // Initial load
     populateIncidents();
     populateOnDuty();
@@ -22,6 +24,12 @@ $(document).ready(function () {
     setInterval(populateIncidents, 10000);
     setInterval(populateCad, 10750);
 });
+
+function showClock() {
+    var d = new Date();
+    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+    $('#clock').html(d.toISOString().slice(0, 19).replace('T', ' '));
+}
 
 function populateCad() {
     //$.getJSON("/api/cad/cleared/12-10-2018", {}, function (response) {
