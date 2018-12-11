@@ -32,38 +32,32 @@
     </head>
 
     <body>
-        <div class="container-fluid">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <a class="navbar-brand" href="#">
-                    <img src="img/iar.png" width="30" height="30" class="d-inline-block align-top" alt="">
-                    Dayville Fire Company
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <!--
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+            <a class="navbar-brand" href="#">
+                <img src="img/iar.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                Dayville Fire Company
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!--
+            <div class="navbar-collapse justify-content">
+                <ul class="navbar-nav">
+                    <li>Item</li>
+                </ul>
+            </div>
+            -->
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#" id="clock">&nbsp;</a>
                     </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Features</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Pricing</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link disabled" href="#">Disabled</a>
-                        </li>
-                        -->
-                        <li class="nav-item">
-                            <a class="nav-link disabled" href="#" id="clock">&nbsp;</a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+                </ul>
+            </div>
+        </nav>
+        <div style="height:50px;">&nbsp;</div>
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-6">
                     <h5 class="card-header alert-danger">Incidents</h5>
@@ -160,6 +154,12 @@
 
             </div> <!-- /row -->
         </div> <!-- /container-fluid -->
+
+        <div style="height:100px;">&nbsp;</div>
+
+        <div class="fixed-bottom alert alert-dark" id="message">
+            <scroll style="width:100%">Dayville Fire Company</scroll>
+        </div>
 
         <script>
         $.getScript("js/display.js");
