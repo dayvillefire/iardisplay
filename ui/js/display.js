@@ -56,7 +56,7 @@ function populateCad() {
                 if (response[i].units[unit]['status'] == 'RESPONDING') {
                     unitsresponding.push(highlightOurUnits(unit));
                 }
-                if (response[i].units[unit]['status'] == 'ON SCENE') {
+                if (response[i].units[unit]['status'] == 'AT SCENE') {
                     unitsonscene.push(highlightOurUnits(unit));
                 }
                 if (response[i].units[unit]['status'] == 'Available') {
@@ -94,8 +94,26 @@ function populateIncidents() {
         if (x > 5) {
             x = 5;
         }
-        for (var i = 0; i < x; i++) {
+        var shown = 0;
+        for (var i = 0; i < response.incidents.length; i++) {
             var id = response.incidents[i].Id;
+
+            // Only show x entries
+            if (shown >= x) {
+                continue;
+            }
+
+            // Determine if we have any existing patterns
+            var found = false;
+            for (var j = 0; j < config.iarAcceptPatterns.length; j++) {
+                if (response.detail[id + 0].Body.indexOf(config.iarAcceptPatterns[j]) != -1) {
+                    found = true;
+                }
+            }
+            if (!found && config.iarAcceptPatterns.length > 0) {
+                continue;
+            }
+
             var body = '<tr><td>';
             if (i == 0) {
                 body += "<b>";
@@ -115,6 +133,7 @@ function populateIncidents() {
             }
             body += '</td></tr>';
             $('#incidents').append(body);
+            shown++;
         }
     });
     //body += '<tr><td>' + response[i].Body + '</td></tr>';

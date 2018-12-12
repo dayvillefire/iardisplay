@@ -18,10 +18,11 @@ type AppConfig struct {
 	Port     int  `yaml:"port"`
 	Accounts struct {
 		Iar struct {
-			Agency        string `yaml:"agency"`
-			Username      string `yaml:"username"`
-			Password      string `yaml:"password"`
-			CacheDuration string `yaml:"cache-duration"`
+			Agency         string   `yaml:"agency"`
+			Username       string   `yaml:"username"`
+			Password       string   `yaml:"password"`
+			CacheDuration  string   `yaml:"cache-duration"`
+			AcceptPatterns []string `yaml:"accept-patterns"`
 		} `yaml:"iar"`
 		Cad struct {
 			Monitor        string   `yaml:"monitor"`

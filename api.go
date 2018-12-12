@@ -124,9 +124,10 @@ func apiIarSchedule(c *gin.Context) {
 
 func apiUIConfig(c *gin.Context) {
 	c.JSON(http.StatusOK, map[string]interface{}{
-		"debug":          config.Config.Debug,
-		"unitSuffix":     config.Config.Accounts.Cad.UnitSuffix,
-		"ignorePatterns": config.Config.Accounts.Cad.IgnorePatterns,
+		"debug":             config.Config.Debug,
+		"unitSuffix":        config.Config.Accounts.Cad.UnitSuffix,
+		"iarAcceptPatterns": config.Config.Accounts.Iar.AcceptPatterns,
+		"ignorePatterns":    config.Config.Accounts.Cad.IgnorePatterns,
 	})
 }
 

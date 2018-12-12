@@ -6,6 +6,9 @@ accounts:
     username: usernamehere
     password: mypassword
     cache-duration: 10
+    accept-patterns:
+      - "RES"
+      - "STA"
   cad:
     monitor: aegis
     username: AEGISLOGIN
