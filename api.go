@@ -31,6 +31,9 @@ func initApi(m *gin.Engine) {
 
 func apiCadCurrent(c *gin.Context) {
 	a, err := cad.GetActiveCalls()
+	if config.Config.Debug {
+		log.Printf("apiCadCurrent : CAD CURRENT : %#v", a)
+	}
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return
@@ -40,6 +43,8 @@ func apiCadCurrent(c *gin.Context) {
 		detail, err := cadStatusCache.RetrieveWithCache(x)
 		if err == nil {
 			cs[detail.DispatchTime.Format("2006-01-02 15:04:05")] = detail
+		} else {
+			log.Printf("apiCadCurrent: ERROR: %#v", err)
 		}
 	}
 	c.JSON(http.StatusOK, cs)

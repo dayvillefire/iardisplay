@@ -39,6 +39,7 @@ func (c *CadCallStatusCache) RetrieveWithCache(id string) (monitor.CallStatus, e
 
 	log.Printf("CadCallStatusCache: Caching %s", id)
 	item, err := c.Monitor.GetStatus(id)
+	log.Printf("Fetched item %#v", item)
 	if err != nil {
 		return item, err
 	}
@@ -62,6 +63,7 @@ func (c *CadCallStatusCache) Cached(id string) bool {
 	if !c.initialized {
 		c.cache = map[string]CadCallStatusCacheItem{}
 		c.initialized = true
+		return false
 	}
 	item, exists := c.cache[id]
 	if !exists || item.Expired() {
