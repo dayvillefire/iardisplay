@@ -12,7 +12,7 @@ import (
 	"github.com/jbuchbinder/iarapi"
 )
 
-func initApi(m *gin.Engine) {
+func initAPI(m *gin.Engine) {
 	g := m.Group("/api")
 
 	g.GET("/config", apiUIConfig)
@@ -42,7 +42,7 @@ func apiCadCurrent(c *gin.Context) {
 	for _, x := range a {
 		detail, err := cadStatusCache.RetrieveWithCache(x)
 		if err == nil {
-			cs[detail.DispatchTime.Format("2006-01-02 15:04:05")] = detail
+			cs[detail.DispatchTime.Format(OurTimeFormat)] = detail
 		} else {
 			log.Printf("apiCadCurrent: ERROR: %#v", err)
 		}
@@ -60,7 +60,7 @@ func apiCadClearedDate(c *gin.Context) {
 	for _, x := range a {
 		detail, err := cadStatusCache.RetrieveWithCache(x)
 		if err == nil {
-			cs[detail.DispatchTime.Format("2006-01-02 15:04:05")] = detail
+			cs[detail.DispatchTime.Format(OurTimeFormat)] = detail
 		}
 	}
 	c.JSON(http.StatusOK, cs)
@@ -131,9 +131,9 @@ func apiUIConfig(c *gin.Context) {
 	})
 }
 
-func ContextRequestHeader(c *gin.Context, key string) string {
+func contextRequestHeader(c *gin.Context, key string) string {
 	if config.Config.Debug {
-		log.Printf("ContextRequestHeader: %#v", c.Request.Header[key])
+		log.Printf("contextRequestHeader: %#v", c.Request.Header[key])
 	}
 	if values, _ := c.Request.Header[key]; len(values) > 0 {
 		return values[0]

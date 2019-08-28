@@ -13,7 +13,7 @@ import (
 	"time"
 
 	"github.com/dayvillefire/iardisplay/config"
-	"github.com/elastic/apm-agent-go/module/apmgin"
+	//"github.com/elastic/apm-agent-go/module/apmgin"
 	"github.com/gin-gonic/contrib/gzip"
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
@@ -23,7 +23,7 @@ import (
 )
 
 var (
-	Apm        = flag.Bool("apm", false, "Use apm")
+	//Apm        = flag.Bool("apm", false, "Use apm")
 	ConfigFile = flag.String("config-file", "./display.yml", "App configuration file")
 	Debug      = flag.Bool("debug", false, "Enable debugging (overrides config)")
 	Daemonize  = flag.Bool("daemon", false, "Run as daemon")
@@ -86,7 +86,7 @@ func main() {
 
 	log.Print("Logging into IAR")
 	iar.Debug = c.Debug
-	iar.Login(c.Accounts.Iar.Agency, c.Accounts.Iar.Username, c.Accounts.Iar.Password)
+	err = iar.Login(c.Accounts.Iar.Agency, c.Accounts.Iar.Username, c.Accounts.Iar.Password)
 	if err != nil {
 		panic(err)
 	}
@@ -131,16 +131,16 @@ func application() {
 	log.Printf("Initializing web services")
 	m := gin.New()
 	m.Use(gin.Logger())
-	if *Apm {
-		m.Use(apmgin.Middleware(m))
-	} else {
-		m.Use(gin.Recovery())
-	}
+	//if *Apm {
+	//	m.Use(apmgin.Middleware(m))
+	//} else {
+	m.Use(gin.Recovery())
+	//}
 
 	// Enable gzip compression
 	m.Use(gzip.Gzip(gzip.DefaultCompression))
 
-	initApi(m)
+	initAPI(m)
 
 	log.Print("[static] Initializing with local resources")
 	m.Use(static.Serve("/", static.LocalFile(config.Config.Paths.BasePath+string(os.PathSeparator)+"ui", false)))
@@ -173,7 +173,7 @@ func application() {
 	log.Println(<-shutdownChannel)
 }
 
-func Logger() gin.HandlerFunc {
+func logger() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		t := time.Now()
 
