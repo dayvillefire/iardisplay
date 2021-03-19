@@ -98,7 +98,7 @@ func main() {
 	}
 
 	log.Print("Configuring CAD interface")
-	cad, err = cadmonitor.GetCadMonitor(c.Accounts.Cad.Monitor)
+	cad, err = cadmonitor.InstantiateCadMonitor(c.Accounts.Cad.Monitor)
 	if err != nil {
 		panic(err)
 	}

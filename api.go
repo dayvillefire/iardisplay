@@ -76,9 +76,9 @@ func apiIarIncidents(c *gin.Context) {
 	i := iraw.([]iarapi.IncidentInfoData)
 	d := map[string]iarapi.IncidentInfoData{}
 	for _, x := range i {
-		detail, err := iar.GetIncidentInfo(x.Id)
+		detail, err := iar.GetIncidentInfo(x.ID)
 		if err == nil {
-			d[fmt.Sprintf("%d", x.Id)] = detail
+			d[fmt.Sprintf("%d", x.ID)] = detail
 		}
 	}
 	c.JSON(http.StatusOK, gin.H{"incidents": i, "detail": d})

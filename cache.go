@@ -38,7 +38,7 @@ func (c *CadCallStatusCache) RetrieveWithCache(id string) (monitor.CallStatus, e
 	}
 
 	log.Printf("CadCallStatusCache: Caching %s", id)
-	item, err := c.Monitor.GetStatus(id)
+	item, err := c.Monitor.GetStatusFromURL(id)
 	log.Printf("Fetched item %#v", item)
 	if err != nil {
 		return item, err
